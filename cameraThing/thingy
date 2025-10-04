@@ -68,28 +68,28 @@ while True:
          cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
          cv2.putText(frame, f'{label} {confidence:.2f}', (x, y - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+         # distance calculator
+    
+        boxArea = w * h
+    
+        if label in detectionsStrings:
+            if boxArea > 80000:
+                depth = "veryClose"
+            elif boxArea > 40000:
+                depth = "Close"
+            elif boxArea > 15000:
+                depth = "Medium"
+            else:
+                depth = "veryFar"
+                    
+            if depth == "veryClose":
+                stop.play()
+            print(f"{label} is {depth}")
+
 
     cv2.imshow("YOLO Detection", frame)
     if cv2.waitKey(1) == ord('q'):
         break
-    
-    # distance calculator
-    
-    boxArea = w * h
-    
-    if label in detectionsStrings:
-        if boxArea > 80000:
-            depth = "veryClose"
-        elif boxArea > 40000:
-            depth = "Close"
-        elif boxArea > 15000:
-            depth = "Medium"
-        else:
-            depth = "veryFar"
-            
-        if depth == "veryClose":
-            stop.play()
-        print(f"{label} is {depth}")
         
 cap.release()
 cv2.destroyAllWindows()
